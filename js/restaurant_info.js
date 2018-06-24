@@ -110,7 +110,18 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
     const row = document.createElement('tr');
 
     const day = document.createElement('td');
-    day.innerHTML = key;
+    //day.innerHTML = key;
+
+    const longDay = document.createElement('span');
+    longDay.className = 'long-day';
+    longDay.innerHTML = key;
+    day.append(longDay);
+
+    const shortDay = document.createElement('span');
+    shortDay.className = 'short-day';
+    shortDay.innerHTML = key.slice(-9, 3) + '.';
+    day.append(shortDay);
+
     row.appendChild(day);
 
     const time = document.createElement('td');
@@ -150,14 +161,17 @@ createReviewHTML = (review) => {
   const li = document.createElement('li');
   const name = document.createElement('p');
   name.innerHTML = review.name;
+  name.className = 'review-name';
   li.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
+  date.className = 'review-date';
   li.appendChild(date);
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
+  rating.className = 'review-rating';
   li.appendChild(rating);
 
   const comments = document.createElement('p');

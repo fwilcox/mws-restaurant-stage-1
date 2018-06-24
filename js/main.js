@@ -74,7 +74,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
 initMap = () => {
   self.newMap = L.map('map', {
         center: [40.722216, -73.987501],
-        zoom: 12,
+        zoom: 11,
         scrollWheelZoom: false
       });
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
@@ -163,21 +163,31 @@ createRestaurantHTML = (restaurant) => {
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
   li.append(image);
 
-  const name = document.createElement('h1');
+  const div = document.createElement('div');
+  div.className = 'restaurants-info';
+  li.append(div);
+
+
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
-  li.append(name);
+  div.append(name);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
-  li.append(neighborhood);
+  div.append(neighborhood);
 
   const address = document.createElement('p');
   address.innerHTML = restaurant.address;
-  li.append(address);
+  div.append(address);
 
-  const more = document.createElement('a');
+  const more = document.createElement('button');
+  more.className = 'detail-button';
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  more.addEventListener('click', onClick);
+  function onClick() {
+    window.location.href = more.href;
+  };
   li.append(more)
 
   return li
@@ -197,7 +207,7 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 
-}
+};
 /* addMarkersToMap = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     // Add marker to the map
