@@ -252,13 +252,6 @@ nav h1 a {
   z-index: 2000;
 }
 
-.flex-top {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-around;
-}
-
 .inside #map-container {
   background: blue none repeat scroll 0 0;
   height: 400px;
