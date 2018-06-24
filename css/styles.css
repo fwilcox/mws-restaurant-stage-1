@@ -272,6 +272,7 @@ nav h1 a {
   margin: 15px 0 30px;
   text-transform: uppercase;
   line-height: 1.1;
+	width: 100%;
 }
 
 #restaurant-img {
@@ -301,6 +302,14 @@ nav h1 a {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   padding: 140px 10px 15px;
+}
+
+#restaurant-container {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 #reviews-container {
@@ -401,6 +410,26 @@ nav h1 a {
 }
 
 @media screen and (min-width: 750px) {
+	#restaurant-container {
+		flex-direction: row;
+		justify-content: space-evenly;
+	}
+
+	#restaurant-name {
+		order: -1;
+		margin-left: 1.2em;
+	}
+
+	.restaurant-teaser {
+		width: 45%;
+		order: 0;
+	}
+
+	.restaurant_info {
+		width: 45%;
+		order: 2;
+	}
+
 	#restaurants-list li {
 		width: 30%;
 	}
