@@ -8,8 +8,16 @@ module.exports = function(grunt) {
       dev: {
         options: {
           sizes: [{
-            width: 320,
-            height: 240
+            width: 700,
+            height: 500,
+            name: '1x',
+            quality: 30
+          },
+          {
+            width: 700,
+            height: 500,
+            name: '2x',
+            quality: 50
           }]
         },
         files: [{
