@@ -79,6 +79,14 @@ section {
   text-transform: uppercase;
 }
 
+.screenreader {
+	position: absolute;
+	left: -10000;
+	width: 1px;
+	height: 1px;
+	overflow-x: hidden;
+}
+
 /* ====================== Navigation ====================== */
 .banner {
   width: 100%;
@@ -216,9 +224,14 @@ section {
   text-transform: uppercase;
 }
 
+.restaurant-add {
+	font-size: 1.3em;
+}
+
 .restaurants-info p {
   font-size: 14pt;
 	margin: 0;
+	font-weight: bold;
 }
 
 .detail-button {
@@ -239,7 +252,7 @@ section {
 .detail-button:hover {
 	background-color: #fff;
 	color: #803d00;
-	border: 3px solid orange;
+	border: 3px solid #803d00;
 	font-weight: bold;
 	text-decoration: underline;
 }

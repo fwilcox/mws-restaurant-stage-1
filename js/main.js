@@ -165,7 +165,7 @@ createRestaurantHTML = (restaurant) => {
   const img2x = urlPath + '-2x.jpg';
   image.srcset = `${img1x} 1x, ${img2x} 2x`;
   image.src = img1x;
-  image.alt = " ";
+  image.alt = restaurant.name;
   li.append(image);
 
   const div = document.createElement('div');
@@ -181,7 +181,8 @@ createRestaurantHTML = (restaurant) => {
   neighborhood.innerHTML = restaurant.neighborhood;
   div.append(neighborhood);
 
-  const address = document.createElement('p');
+  const address = document.createElement('address');
+  address.className = 'restaurant-add'
   address.innerHTML = restaurant.address;
   div.append(address);
 

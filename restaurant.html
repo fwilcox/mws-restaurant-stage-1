@@ -39,10 +39,10 @@
       <h2 id="restaurant-name"></h2>
       <div class="restaurant-teaser">
         <img id="restaurant-img">
-        <p id="restaurant-cuisine"></p>
+        <h3 id="restaurant-cuisine"></h3>
       </div>
       <div class="restaurant-info">
-        <p id="restaurant-address"></p>
+        <address id="restaurant-address"></address>
         <table id="restaurant-hours"></table>
       </div>
     </section>
@@ -51,7 +51,8 @@
 
     <!-- Beginning map -->
   <!--  <section id="map-container"> -->
-    <section id="map-container">
+  <section id="map-container" aria-labelledby="map-label" role="application">
+    <label class="screenreader" id="map-label">Map of restaurants</label>
       <div id="map"></div>
     </section>
     <!-- End map -->

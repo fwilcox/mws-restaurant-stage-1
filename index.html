@@ -13,23 +13,26 @@
 
 <body>
   <header>
-    <nav>
+    <nav class="banner">
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
   </header>
 
   <main id="maincontent">
-    <section id="map-container">
+    <section id="map-container" aria-labelledby="map-label" role="application">
+      <label class="screenreader" id="map-label">Map of restaurants</label>
       <div id="map"></div>
     </section>
 
     <section>
       <div class="filter-options">
         <h2>Filter Results</h2>
-        <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+        <label id="neighborhood-label" class="screenreader" for="neighborhood">Select neighborhood</label>
+        <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()" aria-labelledby="neighborhood-label">
           <option value="all">All Neighborhoods</option>
         </select>
-        <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+        <label id="cuisine-label" for="cuisines" class="screenreader">Select cuisine type</label>
+        <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()" aria-labelledby="cuisine-label">
           <option value="all">All Cuisines</option>
         </select>
       </section>
