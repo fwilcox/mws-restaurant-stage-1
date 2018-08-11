@@ -165,7 +165,7 @@ createRestaurantHTML = (restaurant) => {
   const img2x = urlPath + '-2x.jpg';
   image.srcset = `${img1x} 1x, ${img2x} 2x`;
   image.src = img1x;
-  image.alt = restaurant.name;
+  image.alt = restaurant.name + ' provided stock image';
   li.append(image);
 
   const div = document.createElement('div');
