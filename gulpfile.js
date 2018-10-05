@@ -1,15 +1,15 @@
-/*eslint-env node */
-var gulp = require('gulp');
-var autoprefixer = require('gulp-autoprefixer');
-var browserSync = require('browser-sync').create();
-var eslint = require('gulp-eslint');
-var jasmine = require('gulp-jasmine-phantom');
-var uglify = require('gulp-uglify');
-var babel = require('gulp-babel');
-var sourcemaps = require('gulp-sourcemaps');
-var imagemin = require('imagemin');
-var imageminPngquant = require('imagemin-pngquant');
-var cssnano = require('gulp-cssnano');
+/* eslint-env node */
+let gulp = require('gulp');
+let autoprefixer = require('gulp-autoprefixer');
+let browserSync = require('browser-sync').create();
+let eslint = require('gulp-eslint');
+let jasmine = require('gulp-jasmine-phantom');
+let uglify = require('gulp-uglify');
+let babel = require('gulp-babel');
+let sourcemaps = require('gulp-sourcemaps');
+let imagemin = require('imagemin');
+let imageminPngquant = require('imagemin-pngquant');
+let cssnano = require('gulp-cssnano');
 
 gulp.task('default', ['copy-html', 'copy-images', 'copy-sw', 'styles', 'lint'], function() {
 	gulp.watch('css/**/*.css', ['styles']);
