@@ -1,5 +1,5 @@
 var cacheMe = 'mws-restaurant-v1';
-var urlCache = [
+let urlCache = [
   '/',
   'restaurant.html',
   'index.html',
@@ -7,7 +7,7 @@ var urlCache = [
   'js/main.js',
   'js/dbhelper.js',
   'js/restaurant_info.js',
-  //'js/register.js'
+  'js/register.js'
 ];
 
 self.addEventListener('install', function(event) {
