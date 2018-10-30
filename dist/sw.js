@@ -1,13 +1,12 @@
-var cacheMe = 'mws-restaurant-v1';
-var urlCache = [
+const cacheMe = 'mws-restaurant-v1';
+let urlCache = [
   '/',
   'restaurant.html',
   'index.html',
   'css/styles.css',
   'js/main.js',
   'js/dbhelper.js',
-  'js/restaurant_info.js',
-  //'js/register.js'
+  'js/restaurant_info.js'
 ];
 
 self.addEventListener('install', function(event) {
@@ -25,7 +24,7 @@ self.addEventListener('fetch', function(event) {
     .then(function(response) {
       if (response) {
         return response;
-      }
+      } 
       // Cache the response and clone
       var fetchRequest = event.request.clone();
 
