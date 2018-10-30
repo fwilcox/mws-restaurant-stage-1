@@ -7,7 +7,7 @@ let urlCache = [
   'js/main.js',
   'js/dbhelper.js',
   'js/restaurant_info.js',
-  'js/register.js'
+  //'js/register.js'
 ];
 
 self.addEventListener('install', function(event) {
