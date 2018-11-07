@@ -1,4 +1,4 @@
-const cacheMe = 'mws-restaurant-v1';
+var cacheMe = 'mws-restaurant-v1';
 let urlCache = [
   '/',
   'restaurant.html',
@@ -6,7 +6,8 @@ let urlCache = [
   'css/styles.css',
   'js/main.js',
   'js/dbhelper.js',
-  'js/restaurant_info.js'
+  'js/restaurant_info.js',
+  //'js/register.js'
 ];
 
 self.addEventListener('install', function(event) {
@@ -22,26 +23,26 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
   event.respondWith(caches.match(event.request)
     .then(function(response) {
-      if (response) {
-        return response;
-      } 
-      // Cache the response and clone
-      var fetchRequest = event.request.clone();
-
-      return fetch(fetchRequest).then(
-        function(response) {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          // clone into two streams
-          var responseToCache = response.clone();
-
-          caches.open(cacheMe)
-            .then(function(cache) {
-              cache.put(event.request, responseToCache);
-            });
-
+        if (response) {
           return response;
+        }
+        // Cache the response and clone
+        var fetchRequest = event.request.clone();
+
+        return fetch(fetchRequest).then(
+          function(response) {
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response
+            }
+            // clone into two streams
+            var responseToCache = response.clone();
+
+            caches.open(cacheMe)
+              .then(function(cache) {
+                cache.put(event.request, responseToCache);
+              });
+
+              return response;
         }
       );
     })
