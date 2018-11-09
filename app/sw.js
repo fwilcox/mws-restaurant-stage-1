@@ -1,3 +1,5 @@
+import idb from 'idb';
+
 var cacheMe = 'mws-restaurant-v1';
 let urlCache = [
   '/',

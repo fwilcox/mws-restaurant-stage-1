@@ -14,7 +14,7 @@
             "error",
             2
         ],
-        "strict": 1,
+        "strict": 2,
         "linebreak-style": [
             "error",
             "unix"
