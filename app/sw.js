@@ -23,16 +23,16 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
   event.respondWith(caches.match(event.request)
     .then(function(response) {
-        if (response) {
-          return response;
-        }
-        // Cache the response and clone
-        var fetchRequest = event.request.clone();
+      if (response) {
+        return response;
+      }
+      // Cache the response and clone
+      var fetchRequest = event.request.clone();
 
-        return fetch(fetchRequest).then(
+      return fetch(fetchRequest).then(
           function(response) {
             if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response
+              return response;
             }
             // clone into two streams
             var responseToCache = response.clone();
@@ -42,8 +42,8 @@ self.addEventListener('fetch', function(event) {
                 cache.put(event.request, responseToCache);
               });
 
-              return response;
-        }
+            return response;
+          }
       );
     })
   );
