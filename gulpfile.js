@@ -9,6 +9,7 @@ const babelify = require('babelify');
 const browserify = require('browserify');
 const source = require('vinyl-source-stream');
 
+
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 
@@ -34,26 +35,26 @@ gulp.task('scripts', () => {
 });
 
 gulp.task('sw', () => {
-  const bundleStream = browserify({
-    debug: true
-  });
+  const bundleStream = browserify(
+    {debug: true}
+  );
 
   return bundleStream
     .transform(babelify)
-    .require('app/sw.js', {entry:true})
+    .require('app/sw.js'  , {entry:true})
     .bundle()
     .pipe(source('sw.js'))
     .pipe(gulp.dest('.tmp/'));
 });
 
 gulp.task('helper', () => {
-  const bundleStream = browserify({
-    debug: true
-  });
+  const bundleStream = browserify(
+    {debug: true}
+  );
 
   return bundleStream
     .transform(babelify)
-    .require('app/js/dbhelper.js', {entry:true})
+    .require('app/js/dbhelper.js'  , {entry:true})
     .bundle()
     .pipe(source('dbhelper.js'))
     .pipe(gulp.dest('.tmp/js/'));
@@ -138,7 +139,7 @@ gulp.task('serve', () => {
 
     gulp.watch('app/css/**/*.css', ['styles']);
     gulp.watch('app/js/**/*.js', ['scripts', 'helper']);
-    gulp.watch('app/sw.js', ['sw']);
+    gulp.watch('app/sw.js');
     gulp.watch('app/fonts/**/*', ['fonts']);
     gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
@@ -182,7 +183,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
+gulp.task('build', ['html', 'lint', 'html', 'images', 'fonts', 'extras'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 

@@ -2,6 +2,7 @@ import idb from 'idb';
 /**
  * Common database helper functions.
  */
+
 class DBHelper {
 
   /**
@@ -61,6 +62,7 @@ class DBHelper {
       }
     });
   }
+
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
@@ -189,5 +191,6 @@ class DBHelper {
     );
     return marker;
   } */
-
+ 
 }
+window.DBHelper = DBHelper;

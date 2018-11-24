@@ -1,7 +1,10 @@
 import idb from 'idb';
 
 var cacheMe = 'mws-restaurant-v1';
-let urlCache = [
+var allCaches = [
+  cacheMe
+];
+var urlCache = [
   '/',
   'restaurant.html',
   'index.html',
@@ -9,10 +12,17 @@ let urlCache = [
   'js/main.js',
   'js/dbhelper.js',
   'js/restaurant_info.js',
-  //'js/register.js'
+  'js/register.js'
 ];
 
-self.addEventListener('install', function(event) {
+const dbPromise = idb.open('mws-restaurant', 1, upgradeDB => {
+  switch (upgradeDB.oldVersion) {
+  case 0:
+    upgradeDB.createObjectStore('restaurants', {keyPath: 'id'}); 
+  }
+});
+
+self.addEventListener('install', event => {
   event.waitUntil(caches.open(cacheMe)
     .then(function(cache) {
       console.log('Opened cache');
@@ -21,49 +31,113 @@ self.addEventListener('install', function(event) {
   );
 });
 
-// Set browser to get cached URLs and update cache list with new URLs
-self.addEventListener('fetch', function(event) {
-  event.respondWith(caches.match(event.request)
-    .then(function(response) {
-      if (response) {
-        return response;
-      }
-      // Cache the response and clone
-      var fetchRequest = event.request.clone();
+self.addEventListener('fetch', event => {
+  var requestUrl = new URL(event.request.url);
 
-      return fetch(fetchRequest).then(
-          function(response) {
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            // clone into two streams
-            var responseToCache = response.clone();
-
-            caches.open(cacheMe)
-              .then(function(cache) {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-      );
-    })
-  );
+  if (requestUrl.port === '1337') {
+    event.respondWith(getRestaurants(event.request));
+  } else {
+    event.respondWith(cacheResponse(event.request));
+  }
 });
 
-// Replace SW on update
-self.addEventListener('activate', function(event) {
-  var cacheWhitelist = ['mws-restaurant-v1'];
+const idbKeyVal = {
+  get (key) {
+    return dbPromise.then(db => {
+      return db.transaction('restaurants')
+      .objectStore('restaurants')
+      .get(key);
+    });
+  },
+  set(key, val) {
+    return dbPromise.then(db => {
+      const tx = db.transaction('restaurants', 'readwrite');
+      tx.objectStore('restaurants').put(val, key);
+      return tx.complete;
+    });
+  }
+};
 
+function idbResponse(request) {
+  return idbKeyVal.get('restaurants')
+    .then(restaurants => {
+      return (restaurants || fetch(request)
+      .then(response => response.json())
+      .then(json => {
+        idbKeyVal.set('restaurants', json);
+        return json;
+      })
+      );
+    })
+    .then(response => new Response(JSON.stringify(response)))
+    .catch(error => {
+      return new Response(error, {
+        status: 404,
+        statusText: 'fuck'
+      });
+    });
+}
+
+function getRestaurants(request) {
+  return dbPromise.then(db => {
+    return db.transaction('restaurants')
+      .objectStore('restaurants')
+      .get('restaurants');
+  }).then(data => {
+    return (data && data.data) || fetch(request)
+    .then(response => response.json())
+    .then(json => {
+      return dbPromise.then(db => {
+        const tx = db.transaction('restaurants', 'readwrite');
+        const store = tx.objectStore('restaurants');
+        json.forEach(restaurant => {
+          store.put(restaurant);
+        });
+        return json;
+      });
+    });
+  }).then(response => new Response(JSON.stringify(response)))
+  .catch(error => {
+    return new Response('Error fetching from db', error);
+  });
+}
+
+function cacheResponse(request) {
+  return caches.match(request)
+    .then(response => {
+      return response || fetch(request).then(fetchResponse => {
+        return caches.open(cacheMe).then(cache => {
+          if (!fetchResponse.url.includes('browser-sync')) {
+            cache.put(request, fetchResponse.clone());
+          }
+          return fetchResponse;
+        });
+      });
+    }).catch(error => new Response(error, {
+      status: 404,
+      statusText: 'Not connected to internet'
+    }));
+}
+
+self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
-        cacheNames.map(function(cacheName) {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
+        cacheNames.filter(function(cacheName) {
+          return cacheName.startsWith('mws-') &&
+            !allCaches.includes(cacheName);
+        }).map(function(cacheName) {
+          return caches.delete(cacheName);
         })
       );
     })
   );
 });
+
+
+
+
+
+
+
+
