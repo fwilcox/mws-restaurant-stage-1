@@ -41,43 +41,6 @@ self.addEventListener('fetch', event => {
   }
 });
 
-const idbKeyVal = {
-  get (key) {
-    return dbPromise.then(db => {
-      return db.transaction('restaurants')
-      .objectStore('restaurants')
-      .get(key);
-    });
-  },
-  set(key, val) {
-    return dbPromise.then(db => {
-      const tx = db.transaction('restaurants', 'readwrite');
-      tx.objectStore('restaurants').put(val, key);
-      return tx.complete;
-    });
-  }
-};
-
-function idbResponse(request) {
-  return idbKeyVal.get('restaurants')
-    .then(restaurants => {
-      return (restaurants || fetch(request)
-      .then(response => response.json())
-      .then(json => {
-        idbKeyVal.set('restaurants', json);
-        return json;
-      })
-      );
-    })
-    .then(response => new Response(JSON.stringify(response)))
-    .catch(error => {
-      return new Response(error, {
-        status: 404,
-        statusText: 'fuck'
-      });
-    });
-}
-
 function getRestaurants(request) {
   return dbPromise.then(db => {
     return db.transaction('restaurants')
