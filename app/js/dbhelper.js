@@ -40,7 +40,9 @@ class DBHelper {
         return restaurants;
       })
       .then(restaurants => callback(null, restaurants))
-      .catch(error => callback(error, null));
+      .catch(error => {
+        callback(`Request failed. Returned ${error}`, null);
+      });
   }
 
 
