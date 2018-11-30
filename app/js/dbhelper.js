@@ -36,13 +36,14 @@ class DBHelper {
   static fetchRestaurants(callback) {
     fetch(DBHelper.DATABASE_URL + '/restaurants')
       .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
         const restaurants = response.json();
         return restaurants;
       })
       .then(restaurants => callback(null, restaurants))
-      .catch(error => {
-        callback(`Request failed. Returned ${error}`, null);
-      });
+      .catch(error => callback(error, null));
   }
 
 

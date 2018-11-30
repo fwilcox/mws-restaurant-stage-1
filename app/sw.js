@@ -12,7 +12,7 @@ var urlCache = [
   'js/main.js',
   'js/dbhelper.js',
   'js/restaurant_info.js',
-  'js/register.js'
+  //'js/register.js'
 ];
 
 const dbPromise = idb.open('mws-restaurant', 1, upgradeDB => {
@@ -45,23 +45,27 @@ function getRestaurants(request) {
   return dbPromise.then(db => {
     return db.transaction('restaurants')
       .objectStore('restaurants')
-      .get('restaurants');
-  }).then(data => {
-    return (data && data.data) || fetch(request)
-    .then(response => response.json())
-    .then(json => {
-      return dbPromise.then(db => {
-        const tx = db.transaction('restaurants', 'readwrite');
-        const store = tx.objectStore('restaurants');
-        json.forEach(restaurant => {
-          store.put(restaurant);
+      .getAll();
+  }).then(restaurants => {
+    if (restaurants.length) {
+      return restaurants;
+    }
+    return fetch(request)
+      .then(response => response.json())
+      .then(json => {
+        return dbPromise.then(db => {
+          if (!db) return;
+          const tx = db.transaction('restaurants', 'readwrite');
+          const store = tx.objectStore('restaurants');
+          json.forEach(restaurant => {
+            store.put(restaurant);
+          });
+          return json;
         });
-        return json;
       });
-    });
   }).then(response => new Response(JSON.stringify(response)))
   .catch(error => {
-    return new Response('Error fetching from db', error);
+    return new Response(error, {staus: 500, statusText: 'DB failed to fetch'});
   });
 }
 
